@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="iOS," />
 
 
 
@@ -84,12 +84,22 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="WalkerZ's Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="文章的由来之前和好友讨论属性特性copy的时候引出的关于什么是深拷贝和浅拷贝的问题。在网上查阅了很多关于OC的深拷贝和浅拷贝介绍的文章，很多文章对深浅拷贝都有这样的误解：copy就是浅拷贝，mutableCopy就是深拷贝。
+所以写这篇文章是为了阐述我个人对深浅拷贝的理解。如果您有不同的见解，还请不吝赐教。
+先说结论我认为在OC中，copy不一定就是浅拷贝，mutableCopy不一定就是深拷贝。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于OC中的深拷贝和浅拷贝问题">
+<meta property="og:url" content="http://yoursite.com/2017/05/29/ios-deep-copy-and-shallow-copy/index.html">
 <meta property="og:site_name" content="WalkerZ's Blog">
+<meta property="og:description" content="文章的由来之前和好友讨论属性特性copy的时候引出的关于什么是深拷贝和浅拷贝的问题。在网上查阅了很多关于OC的深拷贝和浅拷贝介绍的文章，很多文章对深浅拷贝都有这样的误解：copy就是浅拷贝，mutableCopy就是深拷贝。
+所以写这篇文章是为了阐述我个人对深浅拷贝的理解。如果您有不同的见解，还请不吝赐教。
+先说结论我认为在OC中，copy不一定就是浅拷贝，mutableCopy不一定就是深拷贝。">
+<meta property="og:updated_time" content="2017-05-28T18:38:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WalkerZ's Blog">
+<meta name="twitter:title" content="关于OC中的深拷贝和浅拷贝问题">
+<meta name="twitter:description" content="文章的由来之前和好友讨论属性特性copy的时候引出的关于什么是深拷贝和浅拷贝的问题。在网上查阅了很多关于OC的深拷贝和浅拷贝介绍的文章，很多文章对深浅拷贝都有这样的误解：copy就是浅拷贝，mutableCopy就是深拷贝。
+所以写这篇文章是为了阐述我个人对深浅拷贝的理解。如果您有不同的见解，还请不吝赐教。
+先说结论我认为在OC中，copy不一定就是浅拷贝，mutableCopy不一定就是深拷贝。">
 
 
 
@@ -117,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/29/ios-deep-copy-and-shallow-copy/"/>
 
 
 
 
 
-  <title> WalkerZ's Blog </title>
+  <title> 关于OC中的深拷贝和浅拷贝问题 | WalkerZ's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -144,9 +154,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -227,9 +235,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -262,10 +270,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2017/05/29/ios-deep-copy-and-shallow-copy/" itemprop="url">
-                  关于OC中的深拷贝和浅拷贝问题
-                </a>
+                关于OC中的深拷贝和浅拷贝问题
               
             
           </h1>
@@ -348,9 +353,7 @@
       
 
       
-        
-          
-            <h3 id="文章的由来"><a href="#文章的由来" class="headerlink" title="文章的由来"></a>文章的由来</h3><p>之前和好友讨论属性特性copy的时候引出的关于什么是深拷贝和浅拷贝的问题。在网上查阅了很多关于OC的深拷贝和浅拷贝介绍的文章，很多文章对深浅拷贝都有这样的误解：copy就是浅拷贝，mutableCopy就是深拷贝。</p>
+        <h3 id="文章的由来"><a href="#文章的由来" class="headerlink" title="文章的由来"></a>文章的由来</h3><p>之前和好友讨论属性特性copy的时候引出的关于什么是深拷贝和浅拷贝的问题。在网上查阅了很多关于OC的深拷贝和浅拷贝介绍的文章，很多文章对深浅拷贝都有这样的误解：copy就是浅拷贝，mutableCopy就是深拷贝。</p>
 <p>所以写这篇文章是为了阐述我个人对深浅拷贝的理解。如果您有不同的见解，还请不吝赐教。</p>
 <h3 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h3><p>我认为在OC中，copy不一定就是浅拷贝，mutableCopy不一定就是深拷贝。（是不是感觉跟没说一样= =）</p>
 <h3 id="论述"><a href="#论述" class="headerlink" title="论述"></a>论述</h3><h4 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h4><p>假设存在A类对象a1，现在欲拷贝a1到A类对象a2。<br>所谓拷贝，就是创建新的内存空间，并将a1的属性的值拷贝到a2对应的属性。在这里，属性的类型可能是值类型也可能是引用类型（指针类型）。深浅拷贝的区别就在于对引用类型属性值的拷贝方式上。 </p>
@@ -415,192 +418,62 @@
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在上面的例子中，尤其是容器类的拷贝的例子中可以看出，copy不一定是浅拷贝，有时甚至没发生拷贝行为，而mutableCopy也未必是深拷贝。</p>
 <p>其实比深浅拷贝的概念更重要的是，设想这样一种场景，我们需要向某个方法或界面传递一个数组参数时，我们希望在这个方法或界面中对数组数据的修改不影响原数组的数据，我们如果选择拷贝出数组的副本作为参数，这时候清楚地知道数组的拷贝方式就非常重要了。</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/20/simple-markdown/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="WalkerZ">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.jpeg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="WalkerZ's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="WalkerZ's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/20/simple-markdown/" itemprop="url">
-                  极简MarkDown语法学习
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-20T15:14:54+08:00">
-                2017-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术文章/" itemprop="url" rel="index">
-                    <span itemprop="name">技术文章</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/01/20/simple-markdown/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/20/simple-markdown/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          简单总结了MarkDown的语法，忘记的时候可以回来看看。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/20/simple-markdown/">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/20/simple-markdown/" rel="next" title="极简MarkDown语法学习">
+                <i class="fa fa-chevron-left"></i> 极简MarkDown语法学习
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
+          <span class="post-nav-divider"></span>
 
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -608,6 +481,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/29/ios-deep-copy-and-shallow-copy/"
+           data-title="关于OC中的深拷贝和浅拷贝问题" data-url="http://yoursite.com/2017/05/29/ios-deep-copy-and-shallow-copy/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -627,8 +508,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpeg"
@@ -709,6 +599,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#文章的由来"><span class="nav-number">1.</span> <span class="nav-text">文章的由来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#先说结论"><span class="nav-number">2.</span> <span class="nav-text">先说结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#论述"><span class="nav-number">3.</span> <span class="nav-text">论述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#深拷贝和浅拷贝"><span class="nav-number">3.1.</span> <span class="nav-text">深拷贝和浅拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OC的拷贝"><span class="nav-number">3.2.</span> <span class="nav-text">OC的拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#非容器类的拷贝"><span class="nav-number">3.2.1.</span> <span class="nav-text">非容器类的拷贝</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#容器类的拷贝"><span class="nav-number">3.2.2.</span> <span class="nav-text">容器类的拷贝</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串的拷贝"><span class="nav-number">3.2.3.</span> <span class="nav-text">字符串的拷贝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
@@ -815,6 +721,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
