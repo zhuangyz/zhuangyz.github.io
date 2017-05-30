@@ -349,73 +349,14 @@
 
       
         
-          
-            <h3 id="文章的由来"><a href="#文章的由来" class="headerlink" title="文章的由来"></a>文章的由来</h3><p>之前和好友讨论属性特性copy的时候引出的关于什么是深拷贝和浅拷贝的问题。在网上查阅了很多关于OC的深拷贝和浅拷贝介绍的文章，很多文章对深浅拷贝都有这样的误解：copy就是浅拷贝，mutableCopy就是深拷贝。</p>
-<p>所以写这篇文章是为了阐述我个人对深浅拷贝的理解。如果您有不同的见解，还请不吝赐教。</p>
-<h3 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h3><p>我认为在OC中，copy不一定就是浅拷贝，mutableCopy不一定就是深拷贝。（是不是感觉跟没说一样= =）</p>
-<h3 id="论述"><a href="#论述" class="headerlink" title="论述"></a>论述</h3><h4 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h4><p>假设存在A类对象a1，现在欲拷贝a1到A类对象a2。<br>所谓拷贝，就是创建新的内存空间，并将a1的属性的值拷贝到a2对应的属性。在这里，属性的类型可能是值类型也可能是引用类型（指针类型）。深浅拷贝的区别就在于对引用类型属性值的拷贝方式上。 </p>
-<p>所谓浅拷贝，就是拷贝引用类型属性x的时候，仅仅将x的引用从a1拷贝到a2，在OC里就是将x的地址从a1拷贝到a2，a1和a2的x都指向同一个对象。这时候如果修改了a1.x.field的值，那么a2.x.field的值也会修改到。 </p>
-<p>所谓深拷贝，就是拷贝x的时候，把a1.x所指的对象也拷贝一份，并将新拷贝的对象的引用赋值给a2.x。这样修改了a1.x.field的值，也不会使a2.x.field的值发生变化。</p>
-<h4 id="OC的拷贝"><a href="#OC的拷贝" class="headerlink" title="OC的拷贝"></a>OC的拷贝</h4><h5 id="非容器类的拷贝"><a href="#非容器类的拷贝" class="headerlink" title="非容器类的拷贝"></a>非容器类的拷贝</h5><p>浅拷贝：<br>我定义了两个类：A和X，其中A类实现NSCoping协议，A类有个X类型的属性，X类有个NSInteger类型的属性valueField。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@interface A : NSObject &lt;NSCopying&gt;  </div><div class="line">@property (nonatomic, strong) X *fieldX;   </div><div class="line">// 为了直观一点，fieldX的初始化没写在init方法里，而写在测试代码里面了  </div><div class="line">@end  </div><div class="line">  </div><div class="line">@implementation A  </div><div class="line">- (id)copyWithZone:(NSZone *)zone &#123;  </div><div class="line">    A *copyA = [[self class] allocWithZone:zone];  </div><div class="line">    copyA.fieldX = self.fieldX;  </div><div class="line">    return copyA;  </div><div class="line">&#125;  </div><div class="line">@end  </div><div class="line">  </div><div class="line">@interface X : NSObject  </div><div class="line">@property (nonatomic, assign) NSInteger valueField;   </div><div class="line">@end</div></pre></td></tr></table></figure>
-<p>测试：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">A *a1 = [[A alloc] init];  </div><div class="line">a1.fieldX = [[X alloc] init];  </div><div class="line">a1.fieldX.valueField = 1;  </div><div class="line"></div><div class="line">A *a2 = [a1 copy];  </div><div class="line"></div><div class="line">NSLog(@&quot;a1.fieldX 的地址为 %p&quot;, a1.fieldX);  </div><div class="line">NSLog(@&quot;a2.fieldX 的地址为 %p&quot;, a2.fieldX);  </div><div class="line"></div><div class="line">NSLog(@&quot;修改a1.fieldX.valueField的值之前&quot;);  </div><div class="line">NSLog(@&quot;a1.fieldX.valueField: %ld&quot;, a1.fieldX.valueField);  </div><div class="line">NSLog(@&quot;a2.fieldX.valueField: %ld&quot;, a2.fieldX.valueField);  </div><div class="line">a1.fieldX.valueField = 3;  </div><div class="line">NSLog(@&quot;修改a1.fieldX.valueField的值之后&quot;);  </div><div class="line">NSLog(@&quot;a1.fieldX.valueField: %ld&quot;, a1.fieldX.valueField);  </div><div class="line">NSLog(@&quot;a2.fieldX.valueField: %ld&quot;, a2.fieldX.valueField);</div></pre></td></tr></table></figure></p>
-<p>输出的结果为：</p>
-<blockquote>
-<p>a1.fieldX 的地址为 0x600000001230<br>a2.fieldX 的地址为 0x600000001230<br>修改a1.fieldX.valueField的值之前<br>a1.fieldX.valueField: 1<br>a2.fieldX.valueField: 1<br>修改a1.fieldX.valueField的值之后<br>a1.fieldX.valueField: 3<br>a2.fieldX.valueField: 3 </p>
-</blockquote>
-<p>这种情况就是浅拷贝，拷贝的时候a1仅仅是将fieldX的地址拷贝给a2的fieldX，所以a1、a2的fieldX是同一个对象，所以修改了a1.fieldX.valueField的值之后，a2.fieldX.valueField也会改变。</p>
-<p>下面改成深拷贝试试：</p>
-<p>在A类里将fieldX的属性特性strong修改为copy，X类实现NSCoping协议</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@implementation X</div><div class="line">- (id)copyWithZone:(NSZone *)zone &#123;</div><div class="line">    X *copyX = [[self class] allocWithZone:zone];</div><div class="line">    copyX.valueField = self.valueField;</div><div class="line">    return copyX;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
-<p>测试代码不变，输出结果：</p>
-<blockquote>
-<p>a1.fieldX 的地址为 0x600000008ec0<br>a2.fieldX 的地址为 0x600000008ed0<br>修改a1.fieldX.valueField的值之前<br>a1.fieldX.valueField: 1<br>a2.fieldX.valueField: 1<br>修改a1.fieldX.valueField的值之后<br>a1.fieldX.valueField: 3<br>a2.fieldX.valueField: 1</p>
-</blockquote>
-<p>可以看到a1和a2的fieldX已经不是同一个对象了，所以修改a1.fieldX.valueField的值不会影响到a2.fieldX.valueField的值。</p>
-<p>这就是最简单的非容器类的拷贝了。</p>
-<h5 id="容器类的拷贝"><a href="#容器类的拷贝" class="headerlink" title="容器类的拷贝"></a>容器类的拷贝</h5><p>OC的容器类的拷贝严格上来讲，都是浅拷贝。不管是怎么拷贝（copy or mutableCopy），新数组和原始数组的元素都是一样的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">A *a1 = [[A alloc] init];</div><div class="line">a1.fieldX = [[X alloc] init];</div><div class="line">a1.fieldX.valueField = 1;</div><div class="line">A *a2 = [a1 copy];</div><div class="line"></div><div class="line">NSArray&lt;A *&gt; *array = @[a1, a2];</div><div class="line">NSLog(@&quot;最原始的数组的地址&quot;);</div><div class="line">NSLog(@&quot;%p&quot;, array);</div><div class="line"></div><div class="line">NSLog(@&quot;最原始的数组元素的地址&quot;);</div><div class="line">for (A *a in array) &#123;</div><div class="line">    NSLog(@&quot;- %p&quot;, a);</div><div class="line">&#125;</div><div class="line">NSLog(@&quot;\n&quot;);</div><div class="line"></div><div class="line">NSArray&lt;A *&gt; *arrayCopy = [array copy];</div><div class="line">NSLog(@&quot;NSArray -&gt; NSArray 拷贝后新数组的地址&quot;);</div><div class="line">NSLog(@&quot;%p&quot;, arrayCopy);</div><div class="line">NSLog(@&quot;NSArray -&gt; NSArray 拷贝后新数组的元素的地址&quot;);</div><div class="line">for (A *a in arrayCopy) &#123;</div><div class="line">    NSLog(@&quot;- %p&quot;, a);</div><div class="line">&#125;</div><div class="line">NSLog(@&quot;\n&quot;);</div><div class="line"></div><div class="line">NSMutableArray&lt;A *&gt; *arrayMutableCopy = [NSMutableArray arrayWithArray:array];</div><div class="line">NSLog(@&quot;NSArray -&gt; NSMutableArray 拷贝后新数组的地址&quot;);</div><div class="line">NSLog(@&quot;%p&quot;, arrayMutableCopy);</div><div class="line">NSLog(@&quot;NSArray -&gt; NSMutableArray 拷贝后新数组的元素的地址&quot;);</div><div class="line">for (A *a in arrayMutableCopy) &#123;</div><div class="line">    NSLog(@&quot;- %p&quot;, a);</div><div class="line">&#125;</div><div class="line">NSLog(@&quot;\n&quot;);</div></pre></td></tr></table></figure>
-<p>输出如下：</p>
-<blockquote>
-<p>最原始的数组的地址<br>0x60800003f420</p>
-<p>最原始的数组元素的地址<br>0x60800001dc60<br>0x60800001dc70</p>
-<p>NSArray -&gt; NSArray 拷贝后新数组的地址<br>0x60800003f420</p>
-<p>NSArray -&gt; NSArray 拷贝后新数组的元素的地址<br>0x60800001dc60<br>0x60800001dc70</p>
-<p>NSArray -&gt; NSMutableArray 拷贝后新数组的地址<br>0x600000055d80</p>
-<p>NSArray -&gt; NSMutableArray 拷贝后新数组的元素的地址<br>0x60800001dc60<br>0x60800001dc70</p>
-</blockquote>
-<p>可以看到，NSArray -&gt; NSArray的copy其实连copy都算不上，而NSArray -&gt; NSMutableArray其实只是浅拷贝，元素其实都是同样那些元素。如果是NSMutableArray -&gt; NSMutableArray 或者 NSMutableArray -&gt; NSArray，也是同样的情况，这里就没有写出来了。字典和集合也是一样的情况。</p>
-<p>所以如果拷贝出一个新数组，但是修改了其中一个数组中某个元素的属性，那么另一个数组的这个元素的属性也会受到影响。所以在开发中将数组作为参数来传值的时候需要特别注意这个问题。</p>
-<p>当然，苹果这样做也是合理的，毕竟不是每个类都实现了拷贝协议，而且深拷贝付出的代价也是昂贵的。</p>
-<p>数组实现深拷贝也是可以的</p>
-<h5 id="字符串的拷贝"><a href="#字符串的拷贝" class="headerlink" title="字符串的拷贝"></a>字符串的拷贝</h5><p>编译器对常量字符串的存储是经过编译器优化的：</p>
-<blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; NSString * string1 = @&quot;Hello&quot;;</div><div class="line">&gt; NSString * string2 = @&quot;Hello&quot;;</div><div class="line">&gt; if (string1 == string2) &#123;</div><div class="line">&gt;     NSLog(@&quot;They are same address&quot;);</div><div class="line">&gt; &#125;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-<p>由于常量会占用一块特殊的代码段，加载到内存时，就会映射到一块常量存储区，以加快访问速度。编译器在编译时会发现，string1和string2的内存是相同的常量字符串，会把他们都指向相同的一个区域，而不是开辟出一个额外的内存空间。因此他们的地址是相同的。</p>
-<p>引用自：<a href="http://www.jianshu.com/p/a67c2fca3dc9" target="_blank" rel="external">iOS清楚常量字符串和一般字符串的区别</a></p>
-</blockquote>
-<p>而由常量字符串拷贝出来的常量字符串和上述的情况是一样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">NSString *str1 = @&quot;str&quot;;</div><div class="line">NSLog(@&quot;原始常量字符串地址 %p&quot;, str1);</div><div class="line"></div><div class="line">NSString *strCopy1 = [str1 copy];</div><div class="line">NSLog(@&quot;NSString -&gt; NSString 拷贝后新字符串的地址 %p&quot;, strCopy1);</div><div class="line"></div><div class="line">NSMutableString *strMutableCopy = [str1 mutableCopy];</div><div class="line">NSLog(@&quot;NSString -&gt; NSMutableString 拷贝后新字符串的地址 %p&quot;, strMutableCopy);</div><div class="line">NSLog(@&quot;\n&quot;);</div><div class="line"></div><div class="line">NSMutableString *mutableStr = [NSMutableString stringWithString:@&quot;str&quot;];</div><div class="line">NSLog(@&quot;原始可变字符串地址 %p&quot;, mutableStr);</div><div class="line"></div><div class="line">NSString *mutableStrCopy = [mutableStr copy];</div><div class="line">NSLog(@&quot;NSMutableString -&gt; NSString 拷贝后新字符串的地址 %p&quot;, mutableStrCopy);</div><div class="line"></div><div class="line">NSMutableString *mutableStrMutableCopy = [mutableStr mutableCopy];</div><div class="line">NSLog(@&quot;NSMutableString -&gt; NSMutableString 拷贝后新字符串的地址 %p&quot;, mutableStrMutableCopy);</div><div class="line">NSLog(@&quot;\n&quot;);</div></pre></td></tr></table></figure>
-<p>输出结果：</p>
-<blockquote>
-<p>原始常量字符串地址 0x11630b418<br>NSString -&gt; NSString 拷贝后新字符串的地址 0x11630b418<br>NSString -&gt; NSMutableString 拷贝后新字符串的地址 0x60000026c600</p>
-<p>原始可变字符串地址 0x60000026c640<br>NSMutableString -&gt; NSString 拷贝后新字符串的地址 0xa000000007274733<br>NSMutableString -&gt; NSMutableString 拷贝后新字符串的地址 0x60000026c680</p>
-</blockquote>
-<p>可以看到NSString -&gt; NSString 其实也不算是拷贝，而与可变字符串相关的拷贝都是真正意义上的拷贝，至于是深拷贝还是浅拷贝，因为我不了解字符串中字符的存储方式，所以也无法下结论。</p>
-<p>当然，我们也有办法由常量字符串真实意义上地拷贝出常量字符串：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NSString *str1 = @&quot;str&quot;;</div><div class="line">NSLog(@&quot;原始常量字符串地址 %p&quot;, str1);</div><div class="line"></div><div class="line">NSString *strCopy1 = [[NSString alloc] initWithFormat:@&quot;%@&quot;, str1];</div><div class="line">NSLog(@&quot;NSString -&gt; NSString 拷贝后新字符串的地址 %p&quot;, strCopy1);</div></pre></td></tr></table></figure>
-<p>输出结果：</p>
-<blockquote>
-<p>原始常量字符串地址 0x11cf6b418<br>NSString -&gt; NSString 拷贝后新字符串的地址 0xa000000007274733</p>
-</blockquote>
-<p>当然了，大部分情况下这种做法是没必要的囧。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在上面的例子中，尤其是容器类的拷贝的例子中可以看出，copy不一定是浅拷贝，有时甚至没发生拷贝行为，而mutableCopy也未必是深拷贝。</p>
-<p>其实比深浅拷贝的概念更重要的是，设想这样一种场景，我们需要向某个方法或界面传递一个数组参数时，我们希望在这个方法或界面中对数组数据的修改不影响原数组的数据，我们如果选择拷贝出数组的副本作为参数，这时候清楚地知道数组的拷贝方式就非常重要了。</p>
-
-          
+          个人对OC中的深拷贝和浅拷贝的看法。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/29/ios-deep-copy-and-shallow-copy/">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
