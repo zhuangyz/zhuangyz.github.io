@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="WalkerZ's Blog">
 <meta property="og:description" content="方法其实就只是 cell 设置完约束之后，在 cell 中重写下面这个方法：
 1234567891011121314151617181920// 方式1- (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutA">
-<meta property="og:updated_time" content="2018-01-23T03:05:27.355Z">
+<meta property="og:updated_time" content="2018-01-23T03:08:53.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UICollectionViewCell 高度自适应">
 <meta name="twitter:description" content="方法其实就只是 cell 设置完约束之后，在 cell 中重写下面这个方法：
@@ -362,6 +362,7 @@
 <p>UIView:0x7fa8aff07130 是 cell 的 contentVIew，UIScrollView:0x7fa8b1822800 是其中一个子控件，UIView:0x7fa8aff07130.height == 80 是我设置的 UICollectionViewFlowLayout 的 estimatedItemSize 的 height，但是 scrollView 的 height 却等于150，大于80了。<br>也就是，初始的 cell 高度不够，导致加载 cell 的约束时约束出现冲突，所以出现了那些 log。这就十分尴尬了。</p>
 <p>所以把 estimatedItemSize.height 改到 cell 最小高度就可以消除警告了。</p>
 <p>（个人理解：因为 scrollView.height 是固定的，如果 cell.contentView 只有这样的高度固定的子控件，其实是没什么问题的，应该不会有警告。但是这里的情况是 scrollView 下面还有其他控件，y 相对于 scrollView，并且高度不定。这就可能导致那些控件的高度的约束出现负值，这就是警告了。）</p>
+<p>(这文章写得相当新手orz)</p>
 
       
     </div>
