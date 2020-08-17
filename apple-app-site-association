@@ -1,0 +1,17 @@
+{
+	"applinks": 
+	{	
+		"apps": [],
+		"details": 
+		[
+			{
+				"appID": "8452TWPAH4.com.sunshine.bczpjob",
+				"paths": ["/job/*"]
+			},
+			{
+				"appID": "8452TWPAH4.com.sunshine.bczpent",
+				"paths": ["/ent/*"]
+			},
+		]
+	}
+}
